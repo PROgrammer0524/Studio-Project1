@@ -255,10 +255,4 @@ void Console::writeToBuffer(COORD c, char ch, WORD attribute)
     writeToBuffer(c.X, c.Y, ch, attribute);
 }
 
-void Console::writeToConsole(const CHAR_INFO* lpBuffer)
-{
-    COORD c = {0,0};
-	SMALL_RECT WriteRegion = {0, 0, m_cConsoleSize.X-1, m_cConsoleSize.Y-1};
-    // WriteConsoleOutputA for ASCII text
-	WriteConsoleOutputA(m_hScreenBuffer, lpBuffer, m_cConsoleSize, c, &WriteRegion);
-}
+
