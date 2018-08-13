@@ -1,0 +1,7 @@
+
+.vs/SP1Framework/v14/.suo
+*.ilk
+*.pdb
+/SP1Framework/Debug
+*.opendb
+/Debug
