@@ -21,7 +21,7 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN;
 double  g_dBounceTime; // this is to prevent key bouncing, so we won't trigger keypresses more than once
 
 					   // Console object
-Console g_Console(300, 300, "SP1 Framework");
+Console g_Console(300, 50, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -194,6 +194,7 @@ void moveCharacter()
 		g_dBounceTime = g_dElapsedTime + 0.125; // 125ms should be enough
 	}
 }
+
 void processUserInput()
 {
 	// quits the game if player hits the escape key
@@ -237,39 +238,11 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-	renderMap();        // renders the map to the buffer first
-	renderCharacter();  // renders the character into the buffer
+	renderTutorialMap(); // renders the map to the buffer first
+	renderCharacter();   // renders the character into the buffer
 }
 
-void renderTitlescreen()
-{
-	string line;
-	COORD c;
-	ifstream myfile("map_tutorial.txt");
-
-	c.X = 1;
-	c.Y = 1;
-
-	if (myfile.is_open())
-	{
-		while (getline(myfile, line))
-		{
-			for (int col = 0; col < line.size(); col++)
-			{
-				if (line[col] == '#')
-				{
-					line[col] = 219;
-				}
-				g_Console.writeToBuffer(c, line[col], 0x03);
-				c.X++;
-			}
-			c.Y++;
-			c.X = 1;
-		}
-	}
-}
-
-void renderMap()
+void renderTutorialMap()
 {
 	string line;
 	COORD c;
@@ -341,15 +314,91 @@ void renderMap()
 	}
 }
 
+void renderBronzeMap()
+{
+	string line;
+	COORD c;
+	ifstream myfile("map_bronze.txt");
+
+	c.X = 1;
+	c.Y = 1;
+
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			for (int col = 0; col < line.size(); col++)
+			{
+				if (line[col] == '#')
+				{
+					line[col] = 205;
+				}
+				if (line[col] == '*')
+				{
+					line[col] = 186;
+				}
+				if (line[col] == 'H')
+				{
+					line[col] = 219;
+				}
+				if (line[col] == 'A')
+				{
+					line[col] = 185;
+				}
+				if (line[col] == 'B')
+				{
+					line[col] = 204;
+				}
+				if (line[col] == 'C')
+				{
+					line[col] = 201;
+				}
+				if (line[col] == 'D')
+				{
+					line[col] = 187;
+				}
+				if (line[col] == 'E')
+				{
+					line[col] = 203;
+				}
+				if (line[col] == 'F')
+				{
+					line[col] = 202;
+				}
+				if (line[col] == 'G')
+				{
+					line[col] = 200;
+				}
+				if (line[col] == 'I')
+				{
+					line[col] = 188;
+				}
+				if (line[col] == '!')
+				{
+					line[col] = 176;
+				}
+				if (line[col] == '+')
+				{
+					line[col] = 206;
+				}
+				g_Console.writeToBuffer(c, line[col], 0x03);
+				c.X++;
+			}
+			c.Y++;
+			c.X = 1;
+		}
+	}
+}
+
 void renderCharacter()
 {
 	// Draw the location of the character
-	WORD charColor = 0x0C;
-	if (g_sChar.m_bActive)
-	{
-		charColor = 0x0A;
-	}
-	g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
+	g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, 0x0C);
+}
+
+void characterInteraction()
+{
+	
 }
 
 void renderFramerate()
@@ -359,16 +408,9 @@ void renderFramerate()
 	std::ostringstream ss;
 	ss << std::fixed << std::setprecision(3);
 	ss << 1.0 / g_dDeltaTime << "fps";
-	c.X = g_Console.getConsoleSize().X - 9;
-	c.Y = 0;
-	g_Console.writeToBuffer(c, ss.str());
-
-	// displays the elapsed time
-	ss.str("");
-	ss << g_dElapsedTime << "secs";
 	c.X = 0;
 	c.Y = 0;
-	g_Console.writeToBuffer(c, ss.str(), 0x59);
+	g_Console.writeToBuffer(c, ss.str());
 }
 void renderToScreen()
 {
