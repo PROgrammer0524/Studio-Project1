@@ -157,11 +157,12 @@ void moveCharacter()
 
 	// Updating the location of the character based on the key press
 	// providing a beep sound whenver we shift the character
-	if ((g_abKeyPressed[K_UP] || g_abKeyPressed[W]) && g_sChar.m_cLocation.Y > 0)
+	if ((g_abKeyPressed[K_UP] || g_abKeyPressed[W]) && (g_sChar.m_cLocation.Y - 1) > 0)
 	{
 		//Beep(1440, 30);
 		g_sChar.m_cLocation.Y--;
 		bSomethingHappened = true;
+
 	}
 	if ((g_abKeyPressed[K_LEFT] || g_abKeyPressed[A]) && g_sChar.m_cLocation.X > 0)
 	{
@@ -209,21 +210,63 @@ void clearScreen()
 void renderSplashScreen()  // renders the splash screen
 {
 	COORD c = g_Console.getConsoleSize();
-	c.Y /= 3;
-	c.X = c.X / 2 - 9;
-	g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
-	c.Y += 1;
-	c.X = g_Console.getConsoleSize().X / 2 - 20;
-	g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
-	c.Y += 1;
-	c.X = g_Console.getConsoleSize().X / 2 - 9;
-	g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x03);
+	string line;
+	ifstream myfile("titlescreen.txt");
+
+	c.X = 1;
+	c.Y = 1;
+
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			for (int col = 0; col < line.size(); col++)
+			{
+				if (line[col] == '#')
+				{
+					line[col] = 219;
+				}
+				g_Console.writeToBuffer(c, line[col], 0x03);
+				c.X++;
+			}
+			c.Y++;
+			c.X = 1;
+		}
+	}
 }
 
 void renderGame()
 {
 	renderMap();        // renders the map to the buffer first
 	renderCharacter();  // renders the character into the buffer
+}
+
+void renderTitlescreen()
+{
+	string line;
+	COORD c;
+	ifstream myfile("map_tutorial.txt");
+
+	c.X = 1;
+	c.Y = 1;
+
+	if (myfile.is_open())
+	{
+		while (getline(myfile, line))
+		{
+			for (int col = 0; col < line.size(); col++)
+			{
+				if (line[col] == '#')
+				{
+					line[col] = 219;
+				}
+				g_Console.writeToBuffer(c, line[col], 0x03);
+				c.X++;
+			}
+			c.Y++;
+			c.X = 1;
+		}
+	}
 }
 
 void renderMap()
