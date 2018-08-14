@@ -75,9 +75,13 @@ void shutdown(void)
 void getInput(void)
 {
 	g_abKeyPressed[K_UP] = isKeyPressed(VK_UP);
+	g_abKeyPressed[W] = isKeyPressed(0x57);
 	g_abKeyPressed[K_DOWN] = isKeyPressed(VK_DOWN);
+	g_abKeyPressed[S] = isKeyPressed(0x53);
 	g_abKeyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
+	g_abKeyPressed[A] = isKeyPressed(0x41);
 	g_abKeyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
+	g_abKeyPressed[D] = isKeyPressed(0x44);
 	g_abKeyPressed[K_SPACE] = isKeyPressed(VK_SPACE);
 	g_abKeyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 }
@@ -153,25 +157,25 @@ void moveCharacter()
 
 	// Updating the location of the character based on the key press
 	// providing a beep sound whenver we shift the character
-	if (g_abKeyPressed[K_UP] && g_sChar.m_cLocation.Y > 0)
+	if ((g_abKeyPressed[K_UP] || g_abKeyPressed[W]) && g_sChar.m_cLocation.Y > 0)
 	{
 		//Beep(1440, 30);
 		g_sChar.m_cLocation.Y--;
 		bSomethingHappened = true;
 	}
-	if (g_abKeyPressed[K_LEFT] && g_sChar.m_cLocation.X > 0)
+	if ((g_abKeyPressed[K_LEFT] || g_abKeyPressed[A]) && g_sChar.m_cLocation.X > 0)
 	{
 		//Beep(1440, 30);
 		g_sChar.m_cLocation.X--;
 		bSomethingHappened = true;
 	}
-	if (g_abKeyPressed[K_DOWN] && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+	if ((g_abKeyPressed[K_DOWN] || g_abKeyPressed[S]) && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
 	{
 		//Beep(1440, 30);
 		g_sChar.m_cLocation.Y++;
 		bSomethingHappened = true;
 	}
-	if (g_abKeyPressed[K_RIGHT] && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+	if ((g_abKeyPressed[K_RIGHT] || g_abKeyPressed[D]) && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
 	{
 		//Beep(1440, 30);
 		g_sChar.m_cLocation.X++;
