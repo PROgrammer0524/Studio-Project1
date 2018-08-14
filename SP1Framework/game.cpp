@@ -232,6 +232,9 @@ void renderMap()
 	COORD c;
 	ifstream myfile("map_tutorial.txt");
 
+	c.X = 1;
+	c.Y = 1;
+
 	if (myfile.is_open())
 	{
 		int x = 1;
