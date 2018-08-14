@@ -149,11 +149,6 @@ void gameplay()            // gameplay logic
 						// sound can be played here too.
 }
 
-struct coordinates {
-	int Xc;
-	int Yc;
-};
-
 void moveCharacter()
 {
 	bool bSomethingHappened = false;
@@ -162,7 +157,7 @@ void moveCharacter()
 
 	// Updating the location of the character based on the key press
 	// providing a beep sound whenver we shift the character
-	if ((g_abKeyPressed[K_UP] || g_abKeyPressed[W]) && g_sChar.m_cLocation.Y > 0 )
+	if ((g_abKeyPressed[K_UP] || g_abKeyPressed[W]) && g_sChar.m_cLocation.Y > 0)
 	{
 		//Beep(1440, 30);
 		g_sChar.m_cLocation.Y--;
@@ -236,12 +231,6 @@ void renderMap()
 	string line;
 	COORD c;
 	ifstream myfile("map_tutorial.txt");
-	bool bSomethingHappened = false;
-	struct coordinates count[1000];
-	
-	
-	c.X = 1;
-	c.Y = 1;
 
 	if (myfile.is_open())
 	{
@@ -315,12 +304,6 @@ void renderMap()
 			c.Y++;
 			c.X = 1;
 			x++;
-		}
-
-		if (bSomethingHappened)
-		{
-			// set the bounce time to some time in the future to prevent accidental triggers
-			g_dBounceTime = g_dElapsedTime + 0.125; // 125ms should be enough
 		}
 	}
 }
