@@ -138,7 +138,7 @@ void render()
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-	if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
+	if (g_dElapsedTime > 0) // wait for 3 seconds to switch to game mode, else do nothing
 		g_eGameState = S_GAME;
 }
 
@@ -149,6 +149,11 @@ void gameplay()            // gameplay logic
 						// sound can be played here too.
 }
 
+struct coordinates {
+	int Xc;
+	int Yc;
+};
+
 void moveCharacter()
 {
 	bool bSomethingHappened = false;
@@ -157,7 +162,7 @@ void moveCharacter()
 
 	// Updating the location of the character based on the key press
 	// providing a beep sound whenver we shift the character
-	if ((g_abKeyPressed[K_UP] || g_abKeyPressed[W]) && g_sChar.m_cLocation.Y > 0)
+	if ((g_abKeyPressed[K_UP] || g_abKeyPressed[W]) && g_sChar.m_cLocation.Y > 0 )
 	{
 		//Beep(1440, 30);
 		g_sChar.m_cLocation.Y--;
@@ -231,12 +236,16 @@ void renderMap()
 	string line;
 	COORD c;
 	ifstream myfile("map_tutorial.txt");
-
+	bool bSomethingHappened = false;
+	struct coordinates count[1000];
+	
+	
 	c.X = 1;
 	c.Y = 1;
 
 	if (myfile.is_open())
 	{
+		int x = 1;
 		while (getline(myfile, line))
 		{
 			for (int col = 0; col < line.size(); col++)
@@ -244,46 +253,57 @@ void renderMap()
 				if (line[col] == '#')
 				{
 					line[col] = 205;
+
 				}
 				if (line[col] == '*')
 				{
 					line[col] = 186;
+
 				}
 				if (line[col] == 'H')
 				{
+
 					line[col] = 219;
 				}
 				if (line[col] == 'A')
 				{
 					line[col] = 185;
+	
 				}
 				if (line[col] == 'B')
 				{
+	
 					line[col] = 204;
 				}
 				if (line[col] == 'C')
 				{
 					line[col] = 201;
+	
 				}
 				if (line[col] == 'D')
 				{
 					line[col] = 187;
+
 				}
 				if (line[col] == 'E')
 				{
 					line[col] = 203;
+
 				}
 				if (line[col] == 'F')
 				{
 					line[col] = 202;
+
 				}
 				if (line[col] == 'G')
 				{
 					line[col] = 200;
+
 				}
 				if (line[col] == 'I')
 				{
 					line[col] = 188;
+
 				}
 				if (line[col] == '!')
 				{
@@ -294,6 +314,13 @@ void renderMap()
 			}
 			c.Y++;
 			c.X = 1;
+			x++;
+		}
+
+		if (bSomethingHappened)
+		{
+			// set the bounce time to some time in the future to prevent accidental triggers
+			g_dBounceTime = g_dElapsedTime + 0.125; // 125ms should be enough
 		}
 	}
 }
@@ -321,11 +348,11 @@ void renderFramerate()
 	g_Console.writeToBuffer(c, ss.str());
 
 	// displays the elapsed time
-	ss.str("");
+	/*ss.str("");
 	ss << g_dElapsedTime << "secs";
 	c.X = 0;
 	c.Y = 0;
-	g_Console.writeToBuffer(c, ss.str(), 0x59);
+	g_Console.writeToBuffer(c, ss.str(), 0x59);*/
 }
 void renderToScreen()
 {
